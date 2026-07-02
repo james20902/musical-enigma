@@ -17,6 +17,8 @@ public interface IntakeIO {
     public void updateInputs(IntakeIOInputs inputs);
 
     public void setIntakeSpeed(double volts);
+    //sparkmax spark.setSpeed(12);
+    //talonfx talon.set(12)
 
     public double getIntakePosRad();
 

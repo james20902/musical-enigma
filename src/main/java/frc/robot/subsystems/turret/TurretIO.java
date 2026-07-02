@@ -15,8 +15,7 @@ public interface TurretIO {
     public void updateInputs(TurretIOInputs inputs);
 
     public double getTurretAngle();
-
+    
     public void setTurretVoltage(double volts);
-
 
 }

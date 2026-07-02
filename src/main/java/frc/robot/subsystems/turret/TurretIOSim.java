@@ -8,7 +8,7 @@ public class TurretIOSim implements TurretIO {
 
 
     DCMotorSim sim = new DCMotorSim(
-        LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), 0.91, 3.0),
+        LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), 0.005, 3.0),
         DCMotor.getNEO(1)
     );
 
@@ -33,7 +33,6 @@ public class TurretIOSim implements TurretIO {
 
     @Override
     public void setTurretVoltage(double volts) {
-        System.out.println("sending voltage: " + volts);
         sim.setInputVoltage(volts);
     }
     

@@ -33,10 +33,11 @@ public class IntakeIOTalonFX implements IntakeIO {
 
     @Override
     public void setIntakeSpeed(double volts) {
-        // talon.set(volts);
-        // alternatively:
+        // this
+        talon.setControl(new VoltageOut(volts));
 
-        request.Output = volts; // this is a mutable field
+        // or that
+        request.Output = volts;
         talon.setControl(request);
     }
 

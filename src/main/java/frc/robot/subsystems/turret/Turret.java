@@ -18,10 +18,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Turret extends SubsystemBase {
   /** Creates a new Intake. */
   private final TurretIO io;
+  private final TurretIO io2;
+  private final TurretIO io3;
+  private final TurretIO io4;
 
   private final TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
+  private final TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
+  private final TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
+  private final TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
-  PIDController posController = new PIDController(1.0, 0., 0.);
+
+  PIDController posController = new PIDController(0.8, 0., .06);
 
   Mechanism2d viz = new Mechanism2d(5.0, 5.0);
   MechanismRoot2d root = viz.getRoot("core", 2.5, 2.5);
@@ -46,6 +53,9 @@ public class Turret extends SubsystemBase {
     // This method will be called once per scheduler run
 
     io.updateInputs(inputs);
+    io2.updateInputs(inputs);
+    io3.updateInputs(inputs);
+    io4.updateInputs(inputs);
     // update visual
     tTargetController.setAngle(Degrees.convertFrom(posController.getSetpoint(), Radians));
     tVizController.setAngle(Degrees.convertFrom(inputs.turretPositionRad, Radians));
@@ -62,7 +72,7 @@ public class Turret extends SubsystemBase {
   }
 
   public Command moveForward() {
-    return runOnce(
+    return runOnce( // run, runEnd, runOnce
         () -> {
           io.setTurretVoltage(5.0); // while it is in the box
         });
