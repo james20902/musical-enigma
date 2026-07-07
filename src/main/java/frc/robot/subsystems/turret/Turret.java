@@ -18,13 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Turret extends SubsystemBase {
   /** Creates a new Intake. */
   private final TurretIO io;
-  private final TurretIO io2;
-  private final TurretIO io3;
-  private final TurretIO io4;
-
-  private final TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
-  private final TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
-  private final TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
+  
   private final TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
 
@@ -53,9 +47,7 @@ public class Turret extends SubsystemBase {
     // This method will be called once per scheduler run
 
     io.updateInputs(inputs);
-    io2.updateInputs(inputs);
-    io3.updateInputs(inputs);
-    io4.updateInputs(inputs);
+
     // update visual
     tTargetController.setAngle(Degrees.convertFrom(posController.getSetpoint(), Radians));
     tVizController.setAngle(Degrees.convertFrom(inputs.turretPositionRad, Radians));

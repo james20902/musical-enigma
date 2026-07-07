@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -14,12 +15,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.intake.IntakeIO;
 import frc.robot.subsystems.intake.IntakeIOSim;
+import frc.robot.subsystems.turret.QuadTurret;
 import frc.robot.subsystems.turret.Turret;
 import frc.robot.subsystems.turret.TurretIOSim;
 
@@ -34,14 +37,14 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Intake intake;
-  private final Turret turret;
+  private final QuadTurret turret;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    turret = new Turret(new TurretIOSim());
+    turret = new QuadTurret(new TurretIOSim(), new TurretIOSim(), new TurretIOSim(), new TurretIOSim());
     switch (Constants.currentMode) {
       case REAL:
         intake = new Intake(new IntakeIOSim());
@@ -95,10 +98,15 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Default command, normal field-relative drive
     
-    controller.a().whileTrue(turret.moveForward()).onFalse(turret.stopTurret());
-    controller.b().whileTrue(turret.moveBackward()).onFalse(turret.stopTurret());
-    controller.x().onTrue(turret.setTurretSetpointRad(Math.PI/2));
-    controller.y().onTrue(turret.setTurretSetpointRad((3*Math.PI) / 2));
+    turret.setDefaultCommand(
+      new SequentialCommandGroup(
+        turret.setTurretSetpointRad(() ->
+          -Math.atan2(MathUtil.applyDeadband(controller.getLeftY(), 0.2),
+           MathUtil.applyDeadband(controller.getLeftX(), 0.2))
+        )
+      )
+    );
+    
   }
 
   /**
